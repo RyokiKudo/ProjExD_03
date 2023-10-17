@@ -156,7 +156,6 @@ def main():
     bombs = [Bomb() for _ in range(NUM_OF_BOMBS)]
     beam = None
     score = Score() #スコアのクラス干渉
-
     clock = pg.time.Clock()
     tmr = 0
     while True:
@@ -166,10 +165,7 @@ def main():
             if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
                 # キーが押されたら，かつ，キーの種類がスペースキーだったら
                 beam = Beam(bird)
-
-        
         screen.blit(bg_img, [0, 0])
-        
         for bomb in bombs:
             if bird.rct.colliderect(bomb.rct):
                 # ゲームオーバー時に，こうかとん画像を切り替え，1秒間表示させる
@@ -187,7 +183,6 @@ def main():
                     score.sc += 1 #当たった時にスコア更新
                     pg.display.update()
         bombs = [bomb for bomb in bombs if bomb is not None]
-
         key_lst = pg.key.get_pressed()
         bird.update(key_lst, screen)
         for bomb in bombs:
@@ -195,7 +190,6 @@ def main():
         if beam is not None:
             beam.update(screen)
         score.update(screen)
-        
         pg.display.update()
         tmr += 1
         clock.tick(50)
