@@ -137,14 +137,25 @@ class Bomb:
         screen.blit(self.img, self.rct)
 
 
+class Score:
+    def __init__(self):
+        self.font = pg.font.SysFont("hgp創英角ﾎﾟｯﾌﾟ体",30)
+        self.sc=0
+        self.img = self.font.render(f"スコア：{self.sc}",0,(0,0,255))
+        self.rct = self.img.get_rect(center=(100,850))
+        
+    def update(self, screen: pg.Surface):
+        self.img = self.font.render(f"スコア：{self.sc}",0,(0,0,255)) #一周回った時の更新用
+        screen.blit(self.img,self.rct)#表示
+
 def main():
     pg.display.set_caption("たたかえ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))    
     bg_img = pg.image.load("ex03/fig/pg_bg.jpg")
     bird = Bird(3, (900, 400))
-    #bomb = Bomb((255, 0, 0), 10)
     bombs = [Bomb() for _ in range(NUM_OF_BOMBS)]
     beam = None
+    score = Score() #スコアのクラス干渉
 
     clock = pg.time.Clock()
     tmr = 0
@@ -173,6 +184,7 @@ def main():
                     beam = None
                     bombs[i] = None
                     bird.change_img(6, screen)
+                    score.sc += 1 #当たった時にスコア更新
                     pg.display.update()
         bombs = [bomb for bomb in bombs if bomb is not None]
 
@@ -182,6 +194,8 @@ def main():
             bomb.update(screen)
         if beam is not None:
             beam.update(screen)
+        score.update(screen)
+        
         pg.display.update()
         tmr += 1
         clock.tick(50)
